@@ -5,13 +5,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-	static List<Article> articles = new ArrayList<>();
+	private static List<Article> articles;
+	// 접근지정자 private, protected, public
+	
+	static {//static 생성자
+		articles = new ArrayList<>();
+	}
 
 	public static void main(String[] args) {
 		System.out.println("== 프로그램 시작 ==");
 		makeTestData();
 		Scanner sc = new Scanner(System.in);
-		int lastArticleId = 3;
+		
 
 		while (true) {
 			System.out.printf("명령어 : ");
@@ -39,8 +44,7 @@ public class Main {
 				String title = sc.nextLine();
 				System.out.printf("내용 : ");
 				String body = sc.nextLine();
-				int id = lastArticleId + 1;
-				lastArticleId = id;
+				int id = articles.size() + 1;
 				Article article = new Article(id, regDate, title, body);
 				articles.add(article);
 				System.out.printf("%d번글이 생성되었습니다.\n", id);
@@ -123,9 +127,9 @@ public class Main {
 	}
 
 	private static void makeTestData() {
-		Article article1 = new Article(1, "2023-01-31 20:10:00", "제목1", "내용1");
-		Article article2 = new Article(2, "2023-01-31 20:20:00", "제목2", "내용2");
-		Article article3 = new Article(3, "2023-01-31 20:30:00", "제목3", "내용3");
+		Article article1 = new Article(1, Util.getNowDateStr(), "제목1", "내용1", 10);
+		Article article2 = new Article(2, Util.getNowDateStr(), "제목2", "내용2", 20);
+		Article article3 = new Article(3, Util.getNowDateStr(), "제목3", "내용3", 30);
 		articles.add(article1);
 		articles.add(article2);
 		articles.add(article3);
@@ -139,13 +143,18 @@ class Article {
 	String title;
 	String body;
 	int hit;
-
+	
 	public Article(int id, String regDate, String title, String body) {
+		this(id, regDate, title, body, 0);
+		//다른 생성자한테 일 시키기!!
+	}
+
+	public Article(int id, String regDate, String title, String body, int hit) {
 		this.id = id;
 		this.regDate = regDate;
 		this.title = title;
 		this.body = body;
-		this.hit = 0;
+		this.hit = hit;
 	}
 	public void increasehit() {
 		hit++;
