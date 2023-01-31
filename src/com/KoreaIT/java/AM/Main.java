@@ -27,10 +27,10 @@ public class Main {
 					System.out.println("게시글이 없습니다.");
 					continue;
 				}
-				System.out.println("번호      |      제목");
+				System.out.println("번호    |    제목    |    조회수");
 				for (int i = articles.size() - 1; i >= 0; i--) {
 					Article article = articles.get(i);
-					System.out.printf("%d        |   %s\n", article.id, article.title);
+					System.out.printf("%4d        |   %4s    |      %4d\n", article.id, article.title, article.hit);
 				}
 			} else if (cmd.equals("article write")) {
 
@@ -70,6 +70,7 @@ public class Main {
 					System.out.printf("%d번 글이 수정되었습니다.\n", searchId);
 				}
 			} else if (cmd.startsWith("article detail ")) {
+				
 				String[] cmdBits = cmd.split(" ");
 				int searchId = Integer.parseInt(cmdBits[2]);
 
@@ -86,8 +87,9 @@ public class Main {
 					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", searchId);
 					continue;
 				} else {
-					System.out.printf("번호 : %d\n날짜 : %s\n제목 : %s\n내용 : %s\n", foundArticle.id, foundArticle.regDate,
-							foundArticle.title, foundArticle.body);
+					foundArticle.increasehit();
+					System.out.printf("번호 : %d\n날짜 : %s\n제목 : %s\n내용 : %s\n조회수 : %d회\n", foundArticle.id, foundArticle.regDate,
+							foundArticle.title, foundArticle.body, foundArticle.hit);
 				}
 			} else if (cmd.startsWith("article delete ")) {
 				String[] cmdBits = cmd.split(" ");
@@ -136,11 +138,16 @@ class Article {
 	String regDate;
 	String title;
 	String body;
+	int hit;
 
 	public Article(int id, String regDate, String title, String body) {
 		this.id = id;
 		this.regDate = regDate;
 		this.title = title;
 		this.body = body;
+		this.hit = 0;
+	}
+	public void increasehit() {
+		hit++;
 	}
 }
