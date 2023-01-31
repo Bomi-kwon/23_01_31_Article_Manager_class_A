@@ -1,14 +1,14 @@
-package com.KoreaIT.java.AM;
+package com.KoreaIT.java.AM.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Util {
 	public static String getNowDateStr() {
-		SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
-		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 		Date time = new Date();
-				
+
 		return format.format(time);
 	}
 }
