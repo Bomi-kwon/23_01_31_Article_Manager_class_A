@@ -38,10 +38,10 @@ public class App {
 					System.out.println("게시글이 없습니다.");
 					continue;
 				}
-				System.out.println("번호    |    제목    |    조회수");
+				System.out.println("번호    |    제목     |     조회수");
 				for (int i = articles.size() - 1; i >= 0; i--) {
 					Article article = articles.get(i);
-					System.out.printf("%4d        |   %4s    |      %4d\n", article.id, article.title, article.hit);
+					System.out.printf("%-4d   |   %4s    |    %4d\n", article.id, article.title, article.hit);
 				}
 			}
 
@@ -133,7 +133,6 @@ public class App {
 
 		for (int i = 0; i < articles.size(); i++) {
 			Article article = articles.get(i);
-
 			if (article.id == searchId) {
 				return article;
 			}
