@@ -5,21 +5,23 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.KoreaIT.java.AM.dto.Article;
+import com.KoreaIT.java.AM.dto.Member;
 import com.KoreaIT.java.AM.util.Util;
 
 public class App {
 	private List<Article> articles;
+	private List<Member> members;
 	// 접근지정자 private, protected, public
 
 	public App() {// static 생성자
 		articles = new ArrayList<>();
+		members = new ArrayList<>();
 	}
 
 	public void start() {
 		System.out.println("== 프로그램 시작 ==");
 		makeTestData();
 		Scanner sc = new Scanner(System.in);
-		List<Member> members = new ArrayList<>();
 
 		while (true) {
 			System.out.printf("명령어 : ");
@@ -105,7 +107,7 @@ public class App {
 				}
 
 				String searchKeyword = cmd.substring("article list".length()).trim();
-				
+
 				if (searchKeyword.length() <= 0) {
 					System.out.println("번호    |    제목     |     조회수");
 					for (int i = articles.size() - 1; i >= 0; i--) {
@@ -136,18 +138,51 @@ public class App {
 					}
 				}
 			}
-			
-			else if (cmd.equals("sign up")) {
+
+			else if (cmd.equals("member join")) {
 				System.out.printf("로그인 아이디 : ");
 				String ID = sc.nextLine();
-				System.out.printf("로그인 비밀번호 : ");
-				String PW = sc.nextLine();
+				String PW = null;
+
+				while (true) {
+					System.out.printf("로그인 비밀번호 : ");
+					PW = sc.nextLine();
+					System.out.printf("로그인 비밀번호 확인: ");
+					String PWcheck = sc.nextLine();
+					if (PW.equals(PWcheck) == false) {
+						System.out.println("비밀번호가 일치하지 않습니다.");
+						continue;
+					}
+					break;
+				}
+
 				System.out.printf("이름 : ");
 				String name = sc.nextLine();
 				int memberid = members.size() + 1;
-				Member member = new Member(ID,PW,name);
+				Member member = new Member(memberid, ID, PW, name);
 				members.add(member);
-				System.out.printf("%d번 회원의 가입이 완료되었습니다.\n", memberid);
+				System.out.printf("%d번 회원이 가입했습니다.\n", memberid);
+			}
+
+			else if (cmd.equals("sign in")) {
+				// break랑 continue 중에 뭘 쓸지 모르겠다!!
+				System.out.printf("로그인 아이디 : ");
+				String ID = sc.nextLine();
+				for (Member member : members) {
+					if (member.loginID == ID) {
+						System.out.printf("로그인 비밀번호 : ");
+						String PW = sc.nextLine();
+						if (member.loginPW == PW) {
+							System.out.printf("%s 회원이 로그인했습니다.\n", ID);
+						} else {
+							System.out.println("입력한 비밀번호가 맞지 않습니다.");
+							break;
+						}
+					}
+					System.out.println("해당 아이디가 존재하지 않습니다.");
+					break;
+				}
+
 			}
 
 			else {
@@ -189,15 +224,4 @@ public class App {
 		System.out.println("테스트를 위한 데이터를 생성합니다.");
 	}
 
-}
-class Member {
-	String loginID;
-	String loginPW;
-	String name;
-	
-	public Member(String ID, String PW, String name) {
-		this.loginID = ID;
-		this.loginPW = PW;
-		this.name = name;
-	}
 }
