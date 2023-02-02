@@ -19,6 +19,7 @@ public class App {
 		System.out.println("== 프로그램 시작 ==");
 		makeTestData();
 		Scanner sc = new Scanner(System.in);
+		List<Member> members = new ArrayList<>();
 
 		while (true) {
 			System.out.printf("명령어 : ");
@@ -31,18 +32,6 @@ public class App {
 			else if (cmd.length() == 0) {
 				System.out.println("명령어를 입력하세요.");
 				continue;
-			}
-
-			else if (cmd.equals("article list")) {
-				if (articles.size() == 0) {
-					System.out.println("게시글이 없습니다.");
-					continue;
-				}
-				System.out.println("번호    |    제목     |     조회수");
-				for (int i = articles.size() - 1; i >= 0; i--) {
-					Article article = articles.get(i);
-					System.out.printf("%-4d   |   %4s    |    %4d\n", article.id, article.title, article.hit);
-				}
 			}
 
 			else if (cmd.equals("article write")) {
@@ -89,7 +78,7 @@ public class App {
 					continue;
 				} else {
 					foundArticle.increasehit();
-					System.out.printf("번호 : %d\n날짜 : %s\n제목 : %s\n내용 : %s\n조회수 : %d회\n", foundArticle.id,
+					System.out.printf("번호 : %d\n날짜 : %s\n제목 : %s" + "\n내용 : %s\n조회수 : %d회\n", foundArticle.id,
 							foundArticle.regDate, foundArticle.title, foundArticle.body, foundArticle.hit);
 				}
 			}
@@ -109,6 +98,58 @@ public class App {
 				}
 			}
 
+			else if (cmd.startsWith("article list")) {
+				if (articles.size() == 0) {
+					System.out.println("게시글이 없습니다.");
+					continue;
+				}
+
+				String searchKeyword = cmd.substring("article list".length()).trim();
+				
+				if (searchKeyword.length() <= 0) {
+					System.out.println("번호    |    제목     |     조회수");
+					for (int i = articles.size() - 1; i >= 0; i--) {
+						Article article = articles.get(i);
+						System.out.printf("%-4d   |   %4s    |    %4d\n", article.id, article.title, article.hit);
+					}
+				}
+
+				List<Article> forPrintArticles = articles;
+
+				if (searchKeyword.length() > 0) {
+					forPrintArticles = new ArrayList<>();
+
+					for (Article article : articles) {
+						if (article.title.contains(searchKeyword)) {
+							forPrintArticles.add(article);
+						}
+					}
+					if (forPrintArticles.size() == 0) {
+						System.out.println("검색 결과가 없습니다.");
+						continue;
+					}
+
+					System.out.println("번호    |    제목     |     조회수");
+					for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
+						Article article = forPrintArticles.get(i);
+						System.out.printf("%-4d   |   %4s    |    %4d\n", article.id, article.title, article.hit);
+					}
+				}
+			}
+			
+			else if (cmd.equals("sign up")) {
+				System.out.printf("로그인 아이디 : ");
+				String ID = sc.nextLine();
+				System.out.printf("로그인 비밀번호 : ");
+				String PW = sc.nextLine();
+				System.out.printf("이름 : ");
+				String name = sc.nextLine();
+				int memberid = members.size() + 1;
+				Member member = new Member(ID,PW,name);
+				members.add(member);
+				System.out.printf("%d번 회원의 가입이 완료되었습니다.\n", memberid);
+			}
+
 			else {
 				System.out.println("존재하지 않는 명령어입니다.");
 			}
@@ -120,22 +161,20 @@ public class App {
 	}
 
 	private int getArticleByIndex(int searchId) {
-		for (int i = 0; i < articles.size(); i++) {
-			Article article = articles.get(i);
+		int i = 0;
+		for (Article article : articles) {
 			if (article.id == searchId) {
 				return i;
 			}
+			i++;
 		}
 		return -1;
 	}
 
 	private Article getArticleById(int searchId) {
-
-		for (int i = 0; i < articles.size(); i++) {
-			Article article = articles.get(i);
-			if (article.id == searchId) {
-				return article;
-			}
+		int index = getArticleByIndex(searchId);
+		if (index != -1) {
+			return articles.get(index);
 		}
 		return null;
 	}
@@ -150,4 +189,15 @@ public class App {
 		System.out.println("테스트를 위한 데이터를 생성합니다.");
 	}
 
+}
+class Member {
+	String loginID;
+	String loginPW;
+	String name;
+	
+	public Member(String ID, String PW, String name) {
+		this.loginID = ID;
+		this.loginPW = PW;
+		this.name = name;
+	}
 }
