@@ -140,10 +140,19 @@ public class App {
 			}
 
 			else if (cmd.equals("member join")) {
-				System.out.printf("로그인 아이디 : ");
-				String ID = sc.nextLine();
-				String PW = null;
+				String ID = null;
+				while (true) {
+					System.out.printf("로그인 아이디 : ");
+					ID = sc.nextLine();
+					
+					if(isjoinableId(ID) == false) {
+						System.out.println("이미 존재하는 아이디입니다.");
+						continue;
+					}
+					break;
+				}
 
+				String PW = null;
 				while (true) {
 					System.out.printf("로그인 비밀번호 : ");
 					PW = sc.nextLine();
@@ -193,6 +202,26 @@ public class App {
 		sc.close();
 
 		System.out.println("== 프로그램 끝 ==");
+	}
+
+	private boolean isjoinableId(String iD) {
+		int index = getMemberIndexbyLoginID(iD);
+		
+		if(index == -1) {
+			return true;
+		}
+		return false;
+	}
+
+	private int getMemberIndexbyLoginID(String iD) {
+		int i = 0;
+		for (Member member : members) {
+			if (member.loginID.equals(iD)) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
 	}
 
 	private int getArticleByIndex(int searchId) {
