@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.KoreaIT.java.AM.controller.ArticleController;
+import com.KoreaIT.java.AM.controller.MemberController;
 import com.KoreaIT.java.AM.dto.Article;
 import com.KoreaIT.java.AM.dto.Member;
 import com.KoreaIT.java.AM.util.Util;
@@ -22,6 +24,8 @@ public class App {
 		System.out.println("== 프로그램 시작 ==");
 		makeTestData();
 		Scanner sc = new Scanner(System.in);
+		MemberController memberController = new MemberController(members, sc);
+		ArticleController articleController = new ArticleController();
 
 		while (true) {
 			System.out.printf("명령어 : ");
@@ -140,37 +144,8 @@ public class App {
 			}
 
 			else if (cmd.equals("member join")) {
-				String ID = null;
-				while (true) {
-					System.out.printf("로그인 아이디 : ");
-					ID = sc.nextLine();
-					
-					if(isjoinableId(ID) == false) {
-						System.out.println("이미 존재하는 아이디입니다.");
-						continue;
-					}
-					break;
-				}
-
-				String PW = null;
-				while (true) {
-					System.out.printf("로그인 비밀번호 : ");
-					PW = sc.nextLine();
-					System.out.printf("로그인 비밀번호 확인: ");
-					String PWcheck = sc.nextLine();
-					if (PW.equals(PWcheck) == false) {
-						System.out.println("비밀번호가 일치하지 않습니다.");
-						continue;
-					}
-					break;
-				}
-
-				System.out.printf("이름 : ");
-				String name = sc.nextLine();
-				int memberid = members.size() + 1;
-				Member member = new Member(memberid, ID, PW, name);
-				members.add(member);
-				System.out.printf("%d번 회원이 가입했습니다.\n", memberid);
+				memberController.dojoin();
+				
 			}
 
 			else if (cmd.equals("sign in")) {
@@ -204,25 +179,7 @@ public class App {
 		System.out.println("== 프로그램 끝 ==");
 	}
 
-	private boolean isjoinableId(String iD) {
-		int index = getMemberIndexbyLoginID(iD);
-		
-		if(index == -1) {
-			return true;
-		}
-		return false;
-	}
-
-	private int getMemberIndexbyLoginID(String iD) {
-		int i = 0;
-		for (Member member : members) {
-			if (member.loginID.equals(iD)) {
-				return i;
-			}
-			i++;
-		}
-		return -1;
-	}
+	
 
 	private int getArticleByIndex(int searchId) {
 		int i = 0;
