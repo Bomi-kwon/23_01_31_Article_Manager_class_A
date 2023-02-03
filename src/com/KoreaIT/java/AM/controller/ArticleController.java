@@ -7,13 +7,37 @@ import java.util.Scanner;
 import com.KoreaIT.java.AM.dto.Article;
 import com.KoreaIT.java.AM.util.Util;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 	private List<Article> articles;
 	private Scanner sc;
+	private String cmd;
+	private String actionMethodName;
 
 	public ArticleController(List<Article> articles, Scanner sc) {
 		this.articles = articles;
 		this.sc = sc;
+	}
+	public void doAction(String cmd, String actionMethodName) {
+		this.cmd = cmd;
+		this.actionMethodName = actionMethodName;
+		
+		switch(actionMethodName) {
+		case "list" :
+			showlist();
+			break;
+		case "detail" :
+			showdetail();
+			break;
+		case "write" :
+			dowrite();
+			break;
+		case "modify" :
+			domodify();
+			break;
+		case "delete" :
+			dodelete();
+			break;
+		}
 	}
 
 	public void dowrite() {
@@ -31,7 +55,7 @@ public class ArticleController {
 
 	}
 
-	public void domodify(String cmd) {
+	public void domodify() {
 		String[] cmdBits = cmd.split(" ");
 		int searchId = Integer.parseInt(cmdBits[2]);
 
@@ -53,7 +77,7 @@ public class ArticleController {
 	
 	
 
-	public void showdetail(String cmd) {
+	public void showdetail() {
 		String[] cmdBits = cmd.split(" ");
 		int searchId = Integer.parseInt(cmdBits[2]);
 
@@ -69,7 +93,7 @@ public class ArticleController {
 		}		
 	}
 
-	public void dodelete(String cmd) {
+	public void dodelete() {
 		String[] cmdBits = cmd.split(" ");
 		int searchId = Integer.parseInt(cmdBits[2]);
 
@@ -84,7 +108,7 @@ public class ArticleController {
 		}		
 	}
 
-	public void showlist(String cmd) {
+	public void showlist() {
 		if (articles.size() == 0) {
 			System.out.println("게시글이 없습니다.");
 			return;

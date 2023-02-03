@@ -5,13 +5,29 @@ import java.util.Scanner;
 
 import com.KoreaIT.java.AM.dto.Member;
 
-public class MemberController {
+public class MemberController extends Controller {
 	private List<Member> members;
 	private Scanner sc;
-	
+	private String cmd;
+	private String actionMethodName;
+
 	public MemberController(List<Member> members, Scanner sc) {
 		this.members = members;
 		this.sc = sc;
+	}
+
+	public void doAction(String cmd, String actionMethodName) {
+		this.cmd = cmd;
+		this.actionMethodName = actionMethodName;
+		
+		switch(actionMethodName) {
+		case "join" :
+			dojoin();
+			break;
+		case "login" :
+			dologin();
+			break;
+		}
 	}
 
 	public void dojoin() {
@@ -47,35 +63,35 @@ public class MemberController {
 		members.add(member);
 		System.out.printf("%d번 회원이 가입했습니다.\n", memberid);
 	}
-	
-	
 
-	public void dosignin() {
-		// break랑 continue 중에 뭘 쓸지 모르겠다!!
-		while(true) {
+	public void dologin() {
+
+		Member matched_member = null;
+		while (true) {
 			System.out.printf("로그인 아이디 : ");
 			String ID = sc.nextLine();
-			Member matched_member = null;
 			for (Member member : members) {
 				if (member.loginID.equals(ID)) {
 					matched_member = member;
 				}
 			}
 			if (matched_member == null) {
-				System.out.println("해당 아이디가 존재하지 않습니다.");
-				return;
+				System.out.println("존재하지 않는 아이디입니다.");
+				continue;
 			}
-			else {
-				System.out.printf("로그인 비밀번호 : ");
-				String PW = sc.nextLine();
-				if (matched_member.loginPW.equals(PW)) {
-					System.out.printf("%s 회원이 로그인했습니다.\n", matched_member.name);
-				}
-				else {
-					System.out.println("입력한 비밀번호가 맞지 않습니다.");
-					return;
-				}
+			break;
+		}
+		while (true) {
+			System.out.printf("로그인 비밀번호 : ");
+			String PW = sc.nextLine();
+			if (matched_member.loginPW.equals(PW)) {
+				System.out.printf("%s 회원이 로그인했습니다.\n", matched_member.name);
+				break;
+			} else {
+				System.out.println("일치하지 않는 비밀번호입니다.");
+				continue;
 			}
+
 		}
 //		for () {
 //			if () {
@@ -90,14 +106,13 @@ public class MemberController {
 //			System.out.println("해당 아이디가 존재하지 않습니다.");
 //			break;
 //		}
-		
+
 	}
-	
 
 	private boolean isjoinableId(String iD) {
 		int index = getMemberIndexbyLoginID(iD);
-		
-		if(index == -1) {
+
+		if (index == -1) {
 			return true;
 		}
 		return false;
@@ -107,7 +122,7 @@ public class MemberController {
 		int i = 0;
 		for (Member member : members) {
 			if (member.loginID.equals(iD)) {
-				//근데 왜 member.loginID == iD 라고 하면 로직이 안 먹히지???
+				// 근데 왜 member.loginID == iD 라고 하면 로직이 안 먹히지???
 				return i;
 			}
 			i++;

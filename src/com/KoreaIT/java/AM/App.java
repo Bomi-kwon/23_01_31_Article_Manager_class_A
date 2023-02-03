@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.KoreaIT.java.AM.controller.ArticleController;
+import com.KoreaIT.java.AM.controller.Controller;
 import com.KoreaIT.java.AM.controller.MemberController;
 import com.KoreaIT.java.AM.dto.Article;
 import com.KoreaIT.java.AM.dto.Member;
@@ -39,38 +40,30 @@ public class App {
 				System.out.println("명령어를 입력하세요.");
 				continue;
 			}
-
-			else if (cmd.equals("article write")) {
-				articleController.dowrite();
+			
+			String[] cmdBits = cmd.split(" ");
+			
+			if(cmdBits.length == 1) {
+				System.out.println("존재하지 않는 명령어입니다.");
+				continue;
 			}
-
-			else if (cmd.startsWith("article modify ")) {
-				articleController.domodify(cmd);
+			Controller controller = null;
+				
+			String controllername = cmdBits[0];
+			String actionMethodName = cmdBits[1];
+			
+			
+			if(controllername.equals("article")) {
+				controller = articleController;
 			}
-
-			else if (cmd.startsWith("article detail ")) {
-				articleController.showdetail(cmd);
+			else if(controllername.equals("member")) {
+				controller = memberController;
 			}
-
-			else if (cmd.startsWith("article delete ")) {
-				articleController.dodelete(cmd);
-			}
-
-			else if (cmd.startsWith("article list")) {
-				articleController.showlist(cmd);
-			}
-
-			else if (cmd.equals("member join")) {
-				memberController.dojoin();
-			}
-
-			else if (cmd.equals("sign in")) {
-				memberController.dosignin();
-			}
-
 			else {
 				System.out.println("존재하지 않는 명령어입니다.");
+				continue;
 			}
+			controller.doAction(cmd, actionMethodName);
 		}
 
 		sc.close();
