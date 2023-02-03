@@ -48,6 +48,52 @@ public class MemberController {
 		System.out.printf("%d번 회원이 가입했습니다.\n", memberid);
 	}
 	
+	
+
+	public void dosignin() {
+		// break랑 continue 중에 뭘 쓸지 모르겠다!!
+		while(true) {
+			System.out.printf("로그인 아이디 : ");
+			String ID = sc.nextLine();
+			Member matched_member = null;
+			for (Member member : members) {
+				if (member.loginID.equals(ID)) {
+					matched_member = member;
+				}
+			}
+			if (matched_member == null) {
+				System.out.println("해당 아이디가 존재하지 않습니다.");
+				return;
+			}
+			else {
+				System.out.printf("로그인 비밀번호 : ");
+				String PW = sc.nextLine();
+				if (matched_member.loginPW.equals(PW)) {
+					System.out.printf("%s 회원이 로그인했습니다.\n", matched_member.name);
+				}
+				else {
+					System.out.println("입력한 비밀번호가 맞지 않습니다.");
+					return;
+				}
+			}
+		}
+//		for () {
+//			if () {
+//				
+//				if (member.loginPW == PW) {
+//					System.out.printf("%s 회원이 로그인했습니다.\n", ID);
+//				} else {
+//					System.out.println("입력한 비밀번호가 맞지 않습니다.");
+//					break;
+//				}
+//			}
+//			System.out.println("해당 아이디가 존재하지 않습니다.");
+//			break;
+//		}
+		
+	}
+	
+
 	private boolean isjoinableId(String iD) {
 		int index = getMemberIndexbyLoginID(iD);
 		
