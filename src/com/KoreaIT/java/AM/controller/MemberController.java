@@ -1,5 +1,6 @@
 package com.KoreaIT.java.AM.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,27 +11,37 @@ public class MemberController extends Controller {
 	private Scanner sc;
 	private String cmd;
 	private String actionMethodName;
+	private Member matched_member;
 
-	public MemberController(List<Member> members, Scanner sc) {
-		this.members = members;
+	public MemberController(Scanner sc) {
 		this.sc = sc;
+
+		members = new ArrayList<Member>();
 	}
 
 	public void doAction(String cmd, String actionMethodName) {
 		this.cmd = cmd;
 		this.actionMethodName = actionMethodName;
-		
-		switch(actionMethodName) {
-		case "join" :
+
+		switch (actionMethodName) {
+		case "join":
 			dojoin();
 			break;
-		case "login" :
+		case "login":
 			dologin();
+			break;
+		case "logout":
+			dologout();
+			break;
+		default:
+			System.out.println("존재하지 않는 명령어입니다.");
 			break;
 		}
 	}
 
-	public void dojoin() {
+	
+
+	private void dojoin() {
 		String ID = null;
 		while (true) {
 			System.out.printf("로그인 아이디 : ");
@@ -64,9 +75,12 @@ public class MemberController extends Controller {
 		System.out.printf("%d번 회원이 가입했습니다.\n", memberid);
 	}
 
-	public void dologin() {
-
-		Member matched_member = null;
+	private void dologin() {
+		if (matched_member != null) {
+			System.out.printf("이미 %s님이 로그인된 상태입니다.\n",matched_member.name);
+			return;
+		}
+		
 		while (true) {
 			System.out.printf("로그인 아이디 : ");
 			String ID = sc.nextLine();
@@ -85,7 +99,7 @@ public class MemberController extends Controller {
 			System.out.printf("로그인 비밀번호 : ");
 			String PW = sc.nextLine();
 			if (matched_member.loginPW.equals(PW)) {
-				System.out.printf("%s 회원이 로그인했습니다.\n", matched_member.name);
+				System.out.printf("%s님이 로그인했습니다.\n", matched_member.name);
 				break;
 			} else {
 				System.out.println("비밀번호를 다시 확인하세요.");
@@ -93,20 +107,19 @@ public class MemberController extends Controller {
 			}
 
 		}
-//		for () {
-//			if () {
-//				
-//				if (member.loginPW == PW) {
-//					System.out.printf("%s 회원이 로그인했습니다.\n", ID);
-//				} else {
-//					System.out.println("입력한 비밀번호가 맞지 않습니다.");
-//					break;
-//				}
-//			}
-//			System.out.println("해당 아이디가 존재하지 않습니다.");
-//			break;
-//		}
-
+		
+		
+	}
+	
+	private void dologout() {
+		if (matched_member == null) {
+			System.out.println("로그인된 회원이 없습니다.");
+		}
+		else {
+			System.out.printf("%s님이 로그아웃 했습니다.\n", matched_member.name);
+			matched_member = null;
+		}
+		
 	}
 
 	private boolean isjoinableId(String iD) {
@@ -128,6 +141,18 @@ public class MemberController extends Controller {
 			i++;
 		}
 		return -1;
+	}
+
+	public void makeTestData() {
+
+		Member member1 = new Member(1, "admin", "admin", "관리자");
+		Member member2 = new Member(2, "test1", "test1", "철수");
+		Member member3 = new Member(3, "test2", "test2", "짱구");
+		members.add(member1);
+		members.add(member2);
+		members.add(member3);
+
+		System.out.println("테스트를 위한 회원 데이터를 생성합니다.");
 	}
 
 }

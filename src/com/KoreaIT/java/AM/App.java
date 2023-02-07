@@ -1,32 +1,25 @@
 package com.KoreaIT.java.AM;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import com.KoreaIT.java.AM.controller.ArticleController;
 import com.KoreaIT.java.AM.controller.Controller;
 import com.KoreaIT.java.AM.controller.MemberController;
-import com.KoreaIT.java.AM.dto.Article;
-import com.KoreaIT.java.AM.dto.Member;
-import com.KoreaIT.java.AM.util.Util;
 
 public class App {
-	private List<Article> articles;
-	private List<Member> members;
-	// 접근지정자 private, protected, public
-
+	//App의 역할 : 올바른 명령어만 통과시키기, 라우팅(최적의 길로 안내)
 	public App() {// static 생성자
-		articles = new ArrayList<>();
-		members = new ArrayList<>();
 	}
 
 	public void start() {
 		System.out.println("== 프로그램 시작 ==");
-		makeTestData();
 		Scanner sc = new Scanner(System.in);
-		MemberController memberController = new MemberController(members, sc);
-		ArticleController articleController = new ArticleController(articles, sc);
+		MemberController memberController = new MemberController(sc);
+		ArticleController articleController = new ArticleController(sc);
+		
+		articleController.makeTestData();
+		memberController.makeTestData();
+		
 
 		while (true) {
 			System.out.printf("명령어 : ");
@@ -71,23 +64,7 @@ public class App {
 		System.out.println("== 프로그램 끝 ==");
 	}
 
-	private void makeTestData() {
-		Article article1 = new Article(1, Util.getNowDateStr(), "제목1", "내용1", 10);
-		Article article2 = new Article(2, Util.getNowDateStr(), "제목2", "내용2", 20);
-		Article article3 = new Article(3, Util.getNowDateStr(), "제목3", "내용3", 30);
-		articles.add(article1);
-		articles.add(article2);
-		articles.add(article3);
-		
-		Member member1 = new Member(1, "test1", "test1", "짱구");
-		Member member2 = new Member(2, "test2", "test2", "철수");
-		Member member3 = new Member(3, "test3", "test3", "훈이");
-		members.add(member1);
-		members.add(member2);
-		members.add(member3);
-		
-		System.out.println("테스트를 위한 데이터를 생성합니다.");
-	}
+	
 	
 
 }

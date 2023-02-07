@@ -13,9 +13,10 @@ public class ArticleController extends Controller {
 	private String cmd;
 	private String actionMethodName;
 
-	public ArticleController(List<Article> articles, Scanner sc) {
-		this.articles = articles;
+	public ArticleController(Scanner sc) {
 		this.sc = sc;
+		
+		articles = new ArrayList<Article>();
 	}
 	public void doAction(String cmd, String actionMethodName) {
 		this.cmd = cmd;
@@ -37,10 +38,13 @@ public class ArticleController extends Controller {
 		case "delete" :
 			dodelete();
 			break;
+		default:
+			System.out.println("존재하지 않는 명령어입니다.");
+			break;
 		}
 	}
 
-	public void dowrite() {
+	private void dowrite() {
 		String regDate = Util.getNowDateStr();
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
@@ -55,7 +59,7 @@ public class ArticleController extends Controller {
 
 	}
 
-	public void domodify() {
+	private void domodify() {
 		String[] cmdBits = cmd.split(" ");
 		int searchId = Integer.parseInt(cmdBits[2]);
 
@@ -77,7 +81,7 @@ public class ArticleController extends Controller {
 	
 	
 
-	public void showdetail() {
+	private void showdetail() {
 		String[] cmdBits = cmd.split(" ");
 		int searchId = Integer.parseInt(cmdBits[2]);
 
@@ -93,7 +97,7 @@ public class ArticleController extends Controller {
 		}		
 	}
 
-	public void dodelete() {
+	private void dodelete() {
 		String[] cmdBits = cmd.split(" ");
 		int searchId = Integer.parseInt(cmdBits[2]);
 
@@ -108,7 +112,7 @@ public class ArticleController extends Controller {
 		}		
 	}
 
-	public void showlist() {
+	private void showlist() {
 		if (articles.size() == 0) {
 			System.out.println("게시글이 없습니다.");
 			return;
@@ -166,6 +170,16 @@ public class ArticleController extends Controller {
 		return -1;
 	}
 	
+	public void makeTestData() {
+		Article article1 = new Article(1, Util.getNowDateStr(), "제목1", "내용1", 10);
+		Article article2 = new Article(2, Util.getNowDateStr(), "제목2", "내용2", 20);
+		Article article3 = new Article(3, Util.getNowDateStr(), "제목3", "내용3", 30);
+		articles.add(article1);
+		articles.add(article2);
+		articles.add(article3);
+		
+		System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
+	}
 	
 
 }
