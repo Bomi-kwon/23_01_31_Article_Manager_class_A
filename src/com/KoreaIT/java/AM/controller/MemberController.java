@@ -88,7 +88,7 @@ public class MemberController extends Controller {
 				System.out.printf("%s 회원이 로그인했습니다.\n", matched_member.name);
 				break;
 			} else {
-				System.out.println("일치하지 않는 비밀번호입니다.");
+				System.out.println("비밀번호를 다시 확인하세요.");
 				continue;
 			}
 

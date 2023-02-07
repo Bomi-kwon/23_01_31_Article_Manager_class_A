@@ -71,7 +71,6 @@ public class App {
 		System.out.println("== 프로그램 끝 ==");
 	}
 
-
 	private void makeTestData() {
 		Article article1 = new Article(1, Util.getNowDateStr(), "제목1", "내용1", 10);
 		Article article2 = new Article(2, Util.getNowDateStr(), "제목2", "내용2", 20);
@@ -79,7 +78,16 @@ public class App {
 		articles.add(article1);
 		articles.add(article2);
 		articles.add(article3);
+		
+		Member member1 = new Member(1, "test1", "test1", "짱구");
+		Member member2 = new Member(2, "test2", "test2", "철수");
+		Member member3 = new Member(3, "test3", "test3", "훈이");
+		members.add(member1);
+		members.add(member2);
+		members.add(member3);
+		
 		System.out.println("테스트를 위한 데이터를 생성합니다.");
 	}
+	
 
 }
