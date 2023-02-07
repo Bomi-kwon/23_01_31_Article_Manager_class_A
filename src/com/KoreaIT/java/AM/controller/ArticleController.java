@@ -45,6 +45,11 @@ public class ArticleController extends Controller {
 	}
 
 	private void dowrite() {
+		if(matched_member == null) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+		
 		String regDate = Util.getNowDateStr();
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
@@ -53,13 +58,18 @@ public class ArticleController extends Controller {
 		
 		int id = articles.size() + 1;
 		
-		Article article = new Article(id, regDate, title, body);
+		Article article = new Article(id, regDate, matched_member.id ,title, body);
 		articles.add(article);
 		System.out.printf("%d번글이 생성되었습니다.\n", id);
 
 	}
 
 	private void domodify() {
+		if(matched_member == null) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+		
 		String[] cmdBits = cmd.split(" ");
 		int searchId = Integer.parseInt(cmdBits[2]);
 
@@ -98,6 +108,10 @@ public class ArticleController extends Controller {
 	}
 
 	private void dodelete() {
+		if(matched_member == null) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
 		String[] cmdBits = cmd.split(" ");
 		int searchId = Integer.parseInt(cmdBits[2]);
 
@@ -121,10 +135,10 @@ public class ArticleController extends Controller {
 		String searchKeyword = cmd.substring("article list".length()).trim();
 
 		if (searchKeyword.length() <= 0) {
-			System.out.println("번호    |    제목     |     조회수");
+			System.out.println("번호    |    작성자  |    제목     |     조회수");
 			for (int i = articles.size() - 1; i >= 0; i--) {
 				Article article = articles.get(i);
-				System.out.printf("%-4d   |   %4s    |    %4d\n", article.id, article.title, article.hit);
+				System.out.printf("%-4d   |   %4d   | %4s    |    %4d\n", article.id, article.memberId ,article.title, article.hit);
 			}
 		}
 
@@ -143,10 +157,10 @@ public class ArticleController extends Controller {
 				return;
 			}
 
-			System.out.println("번호    |    제목     |     조회수");
+			System.out.println("번호    |    작성자  |    제목     |     조회수");
 			for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
 				Article article = forPrintArticles.get(i);
-				System.out.printf("%-4d   |   %4s    |    %4d\n", article.id, article.title, article.hit);
+				System.out.printf("%-4d   |   %4d   | %4s    |    %4d\n", article.id, article.memberId ,article.title, article.hit);
 			}
 		}		
 	}
@@ -171,9 +185,9 @@ public class ArticleController extends Controller {
 	}
 	
 	public void makeTestData() {
-		Article article1 = new Article(1, Util.getNowDateStr(), "제목1", "내용1", 10);
-		Article article2 = new Article(2, Util.getNowDateStr(), "제목2", "내용2", 20);
-		Article article3 = new Article(3, Util.getNowDateStr(), "제목3", "내용3", 30);
+		Article article1 = new Article(1, Util.getNowDateStr(), 1,"제목1", "내용1", 10);
+		Article article2 = new Article(2, Util.getNowDateStr(), 2,"제목2", "내용2", 20);
+		Article article3 = new Article(3, Util.getNowDateStr(), 3,"제목3", "내용3", 30);
 		articles.add(article1);
 		articles.add(article2);
 		articles.add(article3);

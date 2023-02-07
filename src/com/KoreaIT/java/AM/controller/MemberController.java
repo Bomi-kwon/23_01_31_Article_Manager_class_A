@@ -11,7 +11,6 @@ public class MemberController extends Controller {
 	private Scanner sc;
 	private String cmd;
 	private String actionMethodName;
-	private Member matched_member;
 
 	public MemberController(Scanner sc) {
 		this.sc = sc;
@@ -38,8 +37,6 @@ public class MemberController extends Controller {
 			break;
 		}
 	}
-
-	
 
 	private void dojoin() {
 		String ID = null;
@@ -105,10 +102,7 @@ public class MemberController extends Controller {
 				System.out.println("비밀번호를 다시 확인하세요.");
 				continue;
 			}
-
 		}
-		
-		
 	}
 	
 	private void dologout() {
@@ -119,7 +113,6 @@ public class MemberController extends Controller {
 			System.out.printf("%s님이 로그아웃 했습니다.\n", matched_member.name);
 			matched_member = null;
 		}
-		
 	}
 
 	private boolean isjoinableId(String iD) {
